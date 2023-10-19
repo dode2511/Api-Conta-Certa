@@ -1,8 +1,9 @@
 import { Sequelize } from 'sequelize';
+import { DB_HOST,DB_NAME,DB_PASSWORD,DB_PORT,DB_USER } from '../config.js';
 
 export const sequelize = new Sequelize(
-  "railway", "root", "vyr2OWhLj3PxJ4du9Emr", {
+  DB_NAME, DB_USER, DB_PASSWORD, {
   dialect: "mysql",
-  host: "containers-us-west-197.railway.app",
-  port: 5876
+  host: DB_HOST,
+  port: DB_PORT
 });
