@@ -5,7 +5,7 @@ import { verificaLogin } from "./middlewares/verificaLogin.js"
 
 const router = Router()
 
-router.get('/usuarios', verificaLogin, usuarioIndex)
+router.get('/usuarios', usuarioIndex)//verificaLogin
       .post('/usuarios', usuarioCreate)
       .put('/usuarios', usuarioAlteraSenha)
          
