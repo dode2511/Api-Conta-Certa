@@ -1,5 +1,4 @@
 import { Entrada } from '../models/Entrada.js'
-import { Filme } from '../models/Filme.js'
 
 export const entradaIndex = async (req, res) => {
   try {

@@ -31,7 +31,8 @@ export const Entrada = sequelize.define('entrada', {
       allowNull: false
     },
   }, {
-    paranoid: true
+    paranoid: true,
+    timestamps: false
   });
 
 

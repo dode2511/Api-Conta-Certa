@@ -13,7 +13,7 @@ import { DB_HOST,DB_NAME,DB_PASSWORD,DB_PORT,DB_USER } from '../config.js';
 
 
 export const sequelize = new Sequelize(
-  "teste2", "root", "dode2511", {
+  "teste", "root", "dode2511", {
   dialect: "mysql",
   host: "localhost",
   port: 3306

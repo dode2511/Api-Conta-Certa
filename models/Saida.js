@@ -32,6 +32,8 @@ export const Saida = sequelize.define('saida', {
     },
   }, {
     paranoid: true
+  },{
+    timestamps: false,
   });
 
 

@@ -6,6 +6,8 @@ import { PORT } from './config.js'
 import { sequelize } from './databases/conecta.js'
 import { Usuario } from './models/Usuario.js'
 import { Log } from './models/Log.js'
+import { Entrada } from './models/Entrada.js'
+import { Saida } from './models/Saida.js'
 
 const app = express()
 
@@ -21,6 +23,9 @@ async function conecta_db() {
 
     await Usuario.sync()
     await Log.sync()
+    await Entrada.sync()
+    await Saida.sync()
+  
 
   } catch (error) {
     console.error('Erro na conexão com o banco: ', error);

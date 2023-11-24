@@ -1,4 +1,4 @@
-import { Saida } from "../models/Saida"
+import { Saida } from '../models/Saida.js'
 
 export const saidaIndex = async (req, res) => {
   try {
