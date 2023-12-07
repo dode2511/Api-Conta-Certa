@@ -13,7 +13,7 @@ export const Log = sequelize.define('log', {
     allowNull: false
   }
 },{
-  timestamps: false, // Desativa o rastreamento de datas de criação e atualização
+   // Desativa o rastreamento de datas de criação e atualização
 });
 
 Log.belongsTo(Usuario, {
