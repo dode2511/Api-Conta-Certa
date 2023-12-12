@@ -18,10 +18,10 @@ router.get(`/entradas`,entradaIndex)
 
 
 
-router.get(`/saida`,saidaIndex)
-router.get(`/saida`,saidaCreate)
-router.get(`/saida`,saidaDestroy)
-router.get(`/saida/:id`,saidaPesq)
+router.get(`/saidas`,saidaIndex)
+router.get(`/saidas`,saidaCreate)
+router.get(`/saidas`,saidaDestroy)
+router.get(`/saidas/:id`,saidaPesq)
 
 
 
