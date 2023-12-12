@@ -19,8 +19,8 @@ router.get(`/entradas`,entradaIndex)
 
 
 router.get(`/saidas`,saidaIndex)
-router.get(`/saidas`,saidaCreate)
-router.get(`/saidas`,saidaDestroy)
+router.post(`/saidas`,saidaCreate)
+router.delete(`/saidas`,saidaDestroy)
 router.get(`/saidas/:id`,saidaPesq)
 
 
