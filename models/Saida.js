@@ -31,10 +31,9 @@ export const Saida = sequelize.define('saida', {
       allowNull: false
     },
   }, {
-    paranoid: true
-  },{
-    timestamps: false,
-  });
+    paranoid: true,
+    timestamps: false
+  },);
 
 
   Saida.belongsTo(Usuario, {
