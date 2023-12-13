@@ -16,9 +16,17 @@ import { Sequelize } from 'sequelize';
 
 
 
- export const sequelize = new Sequelize(
-   "railway", "root", "eFC36HG-bfB4hgfFaCfhA1bbDhh3GAaG", {
-  dialect: "mysql",
-   host: "monorail.proxy.rlwy.net",
-   port: 52366
-});
+// export const sequelize = new Sequelize(
+//   "railway", "root", "eFC36HG-bfB4hgfFaCfhA1bbDhh3GAaG", {
+//  dialect: "mysql",
+//   host: "monorail.proxy.rlwy.net",
+ //  port: 52366
+//});
+
+
+export const sequelize = new Sequelize(
+    "railway", "root", "4D1ehFCchdHh3EBeeBF-Hh3gcDDb3-H5", {
+   dialect: "mysql",
+     host: "monorail.proxy.rlwy.net",
+    port: 30467
+  });
