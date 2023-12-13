@@ -25,6 +25,10 @@ export const Entrada = sequelize.define('entrada', {
     metodo: {
       type: DataTypes.STRING(30),
       allowNull: false
+    }, 
+    parcelas: {
+      type: DataTypes.INTEGER(),
+      allowNull: true
     },
     data: {
       type: DataTypes.DATE(),

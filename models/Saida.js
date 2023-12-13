@@ -26,6 +26,10 @@ export const Saida = sequelize.define('saida', {
       type: DataTypes.STRING(30),
       allowNull: false
     },
+    parcelas: {
+      type: DataTypes.INTEGER(),
+      allowNull: true
+    },
     data: {
       type: DataTypes.DATE(),
       allowNull: false
