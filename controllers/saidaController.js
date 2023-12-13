@@ -13,16 +13,16 @@ export const saidaIndex = async (req, res) => {
 
 
 export const saidaCreate = async (req, res) => {
-  const { valor, metodo, descricao, categoria, data,usuario_id } = req.body
+  const { valor, metodo, descricao, categoria, data,usuario_id,parcelas } = req.body
 
-  if (!descricao || !usuario_id || !valor || !categoria || !data ) {
+  if (!descricao || !usuario_id || !valor || !categoria || !data  ) {
     res.status(400).json({ id: 0, msg: "Erro... Informe os dados" })
     return
   }
 
   try {
     const saida = await Saida.create({
-      descricao, metodo, valor, categoria, data,usuario_id
+      descricao, metodo, valor, categoria, data,usuario_id,parcelas
     });
     res.status(201).json(saida)
   } catch (error) {
