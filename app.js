@@ -20,11 +20,11 @@ async function conecta_db() {
   try {
     await sequelize.authenticate();
     console.log('Conexão com banco de dados realizada com sucesso');
-
-    await Usuario.sync({ force: true })
-    await Log.sync({ force: true })
-    await Entrada.sync({ force: true })
-    await Saida.sync({ force: true })
+    sequelize.sync()
+    await Usuario.sync()
+    await Log.sync()
+    await Entrada.sync()
+    await Saida.sync()
   
 
   } catch (error) {
