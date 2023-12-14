@@ -51,3 +51,19 @@ export const entradapesq = async (req, res) => {
     res.status(400).send(error)
   }
 }
+
+
+
+export const EntradaGraphCategoria = async (req, res) => {
+
+  try {
+    const entrada = await Entrada.findAll({
+      attributes: ['categoria',
+        [sequelize.fn('count', sequelize.col('id'))]],
+      group: 'categoria'
+    });
+    res.status(200).json(entrada)
+  } catch (error) {
+    res.status(400).send(error)
+  }
+}
