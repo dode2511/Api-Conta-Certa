@@ -62,7 +62,7 @@ export const EntradaGraphCategoria = async (req, res) => {
         [sequelize.fn('count', sequelize.col('id'))]],
       group: 'categoria'
     });
-    res.status(200).json(entrada)
+    res.status(200).json('oi')
   } catch (error) {
     res.status(400).send(error)
   }
