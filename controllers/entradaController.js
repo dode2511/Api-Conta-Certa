@@ -58,12 +58,12 @@ export const entradapesq = async (req, res) => {
 export const entradaCatGrafico = async (req, res) =>{
   try {
     const entrada = await Entrada.findAll({
-      attributes: ['categoria', 
-      [sequelize.fn('count', sequelize.col('id')), 'total']],
-
+      attributes: [
+        [sequelize.fn('count', sequelize.col('id')), 'total']
+      ],
       group: ['categoria'],
     });
-
+    
     res.json(entrada);
   } catch (error) {
     console.error(error);
