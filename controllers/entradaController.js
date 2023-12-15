@@ -1,4 +1,5 @@
 import { Entrada } from '../models/Entrada.js'
+import { Op } from "sequelize"
 
 export const entradaIndex = async (req, res) => {
   try {
@@ -55,19 +56,22 @@ export const entradapesq = async (req, res) => {
 
 
 
-export const entradaCatGrafico = async (req, res) =>{
+export const entradaCategorias = async (req, res) =>{
   try {
   const dadosAgrupados = await Entrada.findAll({
-    attributes: ['categoria', [sequelize.fn('COUNT', 'id'), 'total']],
+    attributes: [
+      'categoria',
+       [sequelize.fn('COUNT', sequelize.literal('*')), 'total']],
     group: ['categoria'],
   });
 
   res.json(dadosAgrupados);
 } catch (error) {
   console.error(error);
-  res.status(500).json({ error: 'Erro interno do servidor' });
+  res.status(400).send(error)
 }
 }
+
 
 
 

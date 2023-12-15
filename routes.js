@@ -2,7 +2,7 @@ import { Router } from "express"
 import { usuarioAlteraSenha, usuarioCreate, usuarioIndex } from "./controllers/usuarioController.js"
 import { loginUsuario } from "./controllers/loginController.js"
 import { verificaLogin } from "./middlewares/verificaLogin.js"
-import { entradaDestroy, entradaCreate, entradaIndex, entradapesq, entradaCatGrafico, entradaGraphDias,   } from "./controllers/entradaController.js"
+import { entradaDestroy, entradaCreate, entradaIndex, entradapesq,  entradaGraphDias, entradaCategorias,   } from "./controllers/entradaController.js"
 import { saidaCreate, saidaDestroy, saidaIndex, saidaPesq } from "./controllers/saidaController.js"
 
 const router = Router()
@@ -15,7 +15,7 @@ router.get(`/entradas`,entradaIndex)
       .get(`/entradas/:id`,entradapesq)
       .get('/entrada/dias', entradaGraphDias)
 
-router.get('/graph',entradaCatGrafico )
+router.get('/graph',entradaCategorias )
 
 
 
