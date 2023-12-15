@@ -61,7 +61,7 @@ export const entradaCategorias = async (req, res) =>{
   const dadosAgrupados = await Entrada.findAll({
     attributes: [
       'categoria',
-       [sequelize.fn('COUNT', sequelize.literal('*')), 'total']],
+       [sequelize.fn('COUNT', sequelize.col('id')), 'num']],
     group: ['categoria'],
   });
 
