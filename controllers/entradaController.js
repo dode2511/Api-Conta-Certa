@@ -1,5 +1,6 @@
 import { Entrada } from '../models/Entrada.js'
 import { Op } from "sequelize"
+import { sequelize } from '../databases/conecta.js'
 
 export const entradaIndex = async (req, res) => {
   try {
