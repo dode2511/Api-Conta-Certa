@@ -59,7 +59,7 @@ export const entradaCatGrafico = async (req, res) =>{
   try {
     const entrada = await Entrada.findAll({
       attributes: [
-        [sequelize.fn('COUNT', sequelize.col('categoria')), 'total']
+        [sequelize.fn('COUNT', sequelize.col('id')), 'total']
       ],
       group: ['categoria'],
     });
@@ -67,5 +67,36 @@ export const entradaCatGrafico = async (req, res) =>{
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Erro interno do servidor' });
+  }
+}
+
+
+export const entradaGraphDias = async (req, res) => {
+
+  const data = new Date()           
+  data.setDate(data.getDate() - 7)  
+
+  const dia = data.getDate().toString().padStart(2, "0")
+  const mes = (data.getMonth() + 1).toString().padStart(2, "0")
+  const ano = data.getFullYear()
+
+  const atras_7 = ano + "-" + mes + "-" + dia
+
+  try {
+    const entrada = await Entrada.findAll({
+      attributes: [
+        [sequelize.fn('DAY', sequelize.col('data')), "dia"],
+        [sequelize.fn('MONTH', sequelize.col('data')), "mes"],
+        'valor',
+        [sequelize.fn('count', sequelize.col('id')), 'num']],
+      group: [
+        sequelize.fn('DAY', sequelize.col('data')),
+        sequelize.fn('MONTH', sequelize.col('data')),
+        'valor'],
+      where: { data: { [Op.gte]: atras_7 } }
+    });
+    res.status(200).json(entrada)
+  } catch (error) {
+    res.status(400).send(error)
   }
 }
