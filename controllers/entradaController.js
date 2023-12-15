@@ -56,18 +56,16 @@ export const entradapesq = async (req, res) => {
 
 
 export const entradaCatGrafico = async (req, res) =>{
-
   try {
-  const entrada = await Entrada.findAll({
-    attributes: ['categoria',
-      [sequelize.fn('count', sequelize.col('id')), 'total']],
-    group: 'categoria'
+  const dadosAgrupados = await Entrada.findAll({
+    attributes: ['categoria', [sequelize.fn('COUNT', 'id'), 'total']],
+    group: ['categoria'],
   });
-  res.status(200).json(entrada)
-} catch (error) {
-  res.status(400).send(req)
-  
 
+  res.json(dadosAgrupados);
+} catch (error) {
+  console.error(error);
+  res.status(500).json({ error: 'Erro interno do servidor' });
 }
 }
 
