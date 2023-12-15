@@ -65,7 +65,9 @@ export const entradaCatGrafico = async (req, res) =>{
   });
   res.status(200).json(entrada)
 } catch (error) {
-  res.status(400).send(error)
+  res.status(400).send(req)
+  
+
 }
 }
 
