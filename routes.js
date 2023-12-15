@@ -13,7 +13,7 @@ router.get(`/entradas`,entradaIndex)
       .post(`/entradas`,entradaCreate)
       .delete(`/entradas`,entradaDestroy)
       .get(`/entradas/:id`,entradapesq)
-      .get('/entrada/dias', entradaGraphDias)
+      .get('/dias', entradaGraphDias)
 
 router.get('/graph',entradaCategorias )
 
