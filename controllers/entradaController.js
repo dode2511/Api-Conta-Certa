@@ -58,27 +58,18 @@ export const entradapesq = async (req, res) => {
 
 export const entradaCategorias = async (req, res) =>{
   try {
-    const entrada = await Entrada.findAll()
-    res.status(200).json(entrada)
+    const dadosAgrupados = await Entrada.findAll({
+      attributes: [
+        'categoria',
+         [sequelize.fn('COUNT', sequelize.col('id')), 'num']],
+      group: ['categoria'],
+    });
+  
+    res.json(dadosAgrupados);
   } catch (error) {
+    console.error(error);
     res.status(400).send(error)
   }
-}
-
-export const ola = async (req, res) =>{
-  try {
-  const dadosAgrupados = await Entrada.findAll({
-    attributes: [
-      'categoria',
-       [sequelize.fn('COUNT', sequelize.col('id')), 'num']],
-    group: ['categoria'],
-  });
-
-  res.json(dadosAgrupados);
-} catch (error) {
-  console.error(error);
-  res.status(400).send(error)
-}
 }
 
 
