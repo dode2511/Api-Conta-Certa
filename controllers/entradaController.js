@@ -59,7 +59,8 @@ export const entradaCatGrafico = async (req, res) =>{
   try {
     const entrada = await Entrada.findAll({
       attributes: ['categoria', 
-      [sequelize.fn('cont', sequelize.col('id')), 'total']],
+      [sequelize.fn('count', sequelize.col('id')), 'total']],
+
       group: ['categoria'],
     });
 
