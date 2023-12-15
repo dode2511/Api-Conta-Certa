@@ -63,7 +63,8 @@ export const entradaCatGrafico = async (req, res) =>{
       ],
       group: ['categoria'],
     });
-    
+    console.log(entrada);
+    console.log("OI");
     res.json(entrada);
   } catch (error) {
     console.error(error);
