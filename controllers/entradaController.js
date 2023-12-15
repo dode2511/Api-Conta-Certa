@@ -58,7 +58,8 @@ export const entradapesq = async (req, res) => {
 export const entradaCatGrafico = async (req, res) =>{
   try {
     const entrada = await Entrada.findAll({
-      attributes: ['categoria', [sequelize.fn('COUNT', 'id'), 'total']],
+      attributes: ['categoria', 
+      [sequelize.fn('cont', sequelize.col('id')), 'total']],
       group: ['categoria'],
     });
 
