@@ -58,6 +58,15 @@ export const entradapesq = async (req, res) => {
 
 export const entradaCategorias = async (req, res) =>{
   try {
+    const entrada = await Entrada.findAll()
+    res.status(200).json(entrada)
+  } catch (error) {
+    res.status(400).send(error)
+  }
+}
+
+export const ola = async (req, res) =>{
+  try {
   const dadosAgrupados = await Entrada.findAll({
     attributes: [
       'categoria',
@@ -71,6 +80,7 @@ export const entradaCategorias = async (req, res) =>{
   res.status(400).send(error)
 }
 }
+
 
 
 
