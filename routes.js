@@ -1,5 +1,5 @@
 import { Router } from "express"
-import { usuarioAlteraSenha, usuarioCreate, usuarioIndex } from "./controllers/usuarioController.js"
+import { login, usuarioAlteraSenha, usuarioCreate, usuarioIndex } from "./controllers/usuarioController.js"
 import { loginUsuario } from "./controllers/loginController.js"
 import { verificaLogin } from "./middlewares/verificaLogin.js"
 import { entradaDestroy, entradaCreate, entradaIndex, entradapesq,  entradaGraphDias, entradaCategorias,   } from "./controllers/entradaController.js"
@@ -28,19 +28,11 @@ router.get(`/saidas/:id`,saidaPesq)
 
 
 
-
-
-
-
-
-
-
-
-
 router.get('/usuarios', usuarioIndex)//verificaLogin
       .post('/usuarios', usuarioCreate)
       .put('/usuarios', usuarioAlteraSenha)
          
-router.get('/login', loginUsuario)
+router.get('/login2', loginUsuario)
+      .post("/login", login)
 
 export default router

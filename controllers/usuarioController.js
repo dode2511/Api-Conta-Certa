@@ -121,3 +121,31 @@ export const usuarioAlteraSenha = async (req, res) => {
     res.status(400).json(error)
   }
 }
+
+
+
+export const login = async (req, res) => {
+
+  const { email, senha } = req.body
+
+  try {
+    const usuario = await Usuario.findOne({ where: { email } });
+
+    if (usuario == null) {
+      res.status(400).json({ erro: 'Login ou senha incorreto' })
+      return
+    }
+
+
+    if (bcrypt.compareSync(senha, usuario.senha)) {
+    
+      res.status(200).json({ id: usuario.id, nome: usuario.nome })
+    }
+    else {
+      res.status(401).json({ erro: 'Login ou senha incorreto' })
+      return
+    }
+  } catch (error) {
+    res.status(400).send(error)
+  }
+}
