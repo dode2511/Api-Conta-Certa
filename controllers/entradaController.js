@@ -4,6 +4,7 @@ import { sequelize } from '../databases/conecta.js'
 import { Parcelas } from '../models/Parcelas.js'
 import Transaction from 'sequelize'
 import addMonths from 'date-fns/addMonths/index.js'
+import { startOfMonth, endOfMonth } from 'date-fns';
 
 export const entradaIndex = async (req, res) => {
   try {
@@ -19,7 +20,7 @@ export const entradaIndex = async (req, res) => {
 
 
 export const entradaDestroy = async (req, res) => {
-  const { id } = req.params
+  const { id } = req.body
 
   try {
     await Entrada.destroy({ where: { id } });
@@ -44,13 +45,26 @@ export const entradapesq = async (req, res) => {
 
 
 export const entradaCategorias = async (req, res) =>{
+  const { id: usuario_id } = req.params;
+  const { mes, ano } = req.query;
+
   try {
     const dadosAgrupados = await Entrada.findAll({
       attributes: [
         'categoria',
-         [sequelize.fn('COUNT', sequelize.col('id')), 'num']],
+         [sequelize.fn('COUNT', sequelize.col('id')), 'num']
+        ],
+        where: {
+          usuario_id: usuario_id ,
+          data: {
+            [Op.between]: [
+              startOfMonth(new Date(Number(ano), Number(mes) - 1)),
+              endOfMonth(new Date(Number(ano), Number(mes) - 1))
+            ],
+        },
+      },
       group: ['categoria'],
-    });
+    },);
   
     res.json(dadosAgrupados);
   } catch (error) {

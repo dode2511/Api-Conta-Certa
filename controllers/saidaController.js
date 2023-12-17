@@ -1,4 +1,8 @@
 import { Saida } from '../models/Saida.js'
+import { startOfMonth, endOfMonth } from 'date-fns';
+import { sequelize } from '../databases/conecta.js'
+import { Op } from "sequelize"
+import addMonths from 'date-fns/addMonths/index.js'
 
 export const saidaIndex = async (req, res) => {
   try {
@@ -13,7 +17,7 @@ export const saidaIndex = async (req, res) => {
 
 
 export const saidaCreate = async (req, res) => {
-  const { valor, metodo, descricao, categoria, data,usuario_id,parcelas } = req.body
+  const { valor, metodo, descricao, categoria, data,usuario_id,num_parcelas } = req.body
 
   if (!descricao || !usuario_id || !valor || !categoria || !data  ) {
     res.status(400).json({ id: 0, msg: "Erro... Informe os dados" })
@@ -22,7 +26,7 @@ export const saidaCreate = async (req, res) => {
 
   try {
     const saida = await Saida.create({
-      descricao, metodo, valor, categoria, data,usuario_id,parcelas
+      descricao, metodo, valor, categoria, data,usuario_id,num_parcelas
     });
     res.status(201).json(saida)
   } catch (error) {
@@ -48,6 +52,38 @@ export const saidaPesq = async (req, res) => {
     const saida = await Saida.findByPk(id)
     res.status(200).json(saida)
   } catch (error) {
+    res.status(400).send(error)
+  }
+}
+
+
+
+
+export const saidaCategoriasData = async (req, res) =>{
+  const { id: usuario_id } = req.params;
+  const { mes, ano } = req.query;
+
+  try {
+    const dadosAgrupados = await Saida.findAll({
+      attributes: [
+        'categoria',
+         [sequelize.fn('COUNT', sequelize.col('id')), 'num']
+        ],
+        where: {
+          usuario_id: usuario_id ,
+          data: {
+            [Op.between]: [
+              startOfMonth(new Date(Number(ano), Number(mes) - 1)),
+              endOfMonth(new Date(Number(ano), Number(mes) - 1))
+            ],
+        },
+      },
+      group: ['categoria'],
+    },);
+  
+    res.json(dadosAgrupados);
+  } catch (error) {
+    console.error(error);
     res.status(400).send(error)
   }
 }
