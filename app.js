@@ -8,6 +8,7 @@ import { Usuario } from './models/Usuario.js'
 import { Log } from './models/Log.js'
 import { Entrada } from './models/Entrada.js'
 import { Saida } from './models/Saida.js'
+import { Parcelas } from './models/Parcelas.js'
 
 const app = express()
 
@@ -24,6 +25,7 @@ async function conecta_db() {
     await Log.sync()
     await Entrada.sync()
     await Saida.sync()
+    await Parcelas.sync()
   
 
   } catch (error) {

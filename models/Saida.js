@@ -26,7 +26,7 @@ export const Saida = sequelize.define('saida', {
       type: DataTypes.STRING(30),
       allowNull: false
     },
-    parcelas: {
+    num_parcelas: {
       type: DataTypes.INTEGER(),
       allowNull: true
     },

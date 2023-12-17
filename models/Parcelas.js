@@ -1,55 +1,58 @@
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../databases/conecta.js';
 import { Usuario } from './Usuario.js';
+import { Entrada } from './Entrada.js';
+import { Saida } from './Saida.js';
 
 
 
-export const Entrada = sequelize.define('entrada', {
+export const Parcelas = sequelize.define('parcelas', {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true
     },
-    valor: {
+    valor_parcela: {
       type: DataTypes.DECIMAL(10,2),
       allowNull: false
     },
-    categoria: {
+    num: {
       type: DataTypes.STRING(60),
       allowNull: false
     },
-    descricao: {
+    data_vencimento: {
       type: DataTypes.TEXT(100),
       allowNull: false
-    },
-    metodo: {
-      type: DataTypes.STRING(30),
-      allowNull: false
-    }, 
-    num_parcelas: {
-      type: DataTypes.INTEGER,
-      allowNull: true
-    },
-    data: {
-      type: DataTypes.DATE(),
-      allowNull: false
-    },
+    }
   }, {
     paranoid: true,
     timestamps: false
   });
 
 
-  Entrada.belongsTo(Usuario, {
+  Parcelas.belongsTo(Usuario, {
     foreignKey: {
       name: 'usuario_id',
       allowNull: false
     },
-    onDelete: 'RESTRICT',
+    onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
   })
 
   
-Usuario.hasMany(Entrada, {
-    foreignKey: 'usuario_Id'
+
+  Parcelas.belongsTo(Entrada, {
+    foreignKey: {
+      name: 'transacao_id',
+      allowNull: false
+    },
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
   })
+
+  
+Entrada.hasMany(Parcelas, {
+    foreignKey: 'transacao_Id'
+  })
+
+

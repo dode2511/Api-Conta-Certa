@@ -1,6 +1,9 @@
 import { Entrada } from '../models/Entrada.js'
 import { Op } from "sequelize"
 import { sequelize } from '../databases/conecta.js'
+import { Parcelas } from '../models/Parcelas.js'
+import Transaction from 'sequelize'
+import addMonths from 'date-fns/addMonths/index.js'
 
 export const entradaIndex = async (req, res) => {
   try {
@@ -14,23 +17,6 @@ export const entradaIndex = async (req, res) => {
 
 
 
-export const entradaCreate = async (req, res) => {
-  const { valor, metodo, descricao, categoria, data, usuario_id,parcelas} = req.body
-
-  if (!descricao || !usuario_id || !valor || !categoria || !data ) {
-    res.status(400).json({ id: 0, msg: "Erro... Informe os dados" })
-    return
-  }
-
-  try {
-    const entrada = await Entrada.create({
-      descricao, metodo, valor, categoria, data,usuario_id,parcelas
-    });
-    res.status(201).json(entrada)
-  } catch (error) {
-    res.status(400).send(error)
-  }
-}
 
 export const entradaDestroy = async (req, res) => {
   const { id } = req.params
@@ -107,5 +93,57 @@ export const entradaGraphDias = async (req, res) => {
     res.status(200).json(entrada)
   } catch (error) {
     res.status(400).send(error)
+  }
+}
+
+
+
+
+export const entradaCreate = async (req, res) => {
+  const { valor, metodo, descricao, categoria, data, usuario_id,num_parcelas} = req.body
+
+  if (!descricao || !usuario_id || !valor || !categoria || !data ) {
+    res.status(400).json({ id: 0, msg: "Erro... Informe os dados" })
+    return
+  }
+
+  const calcularDataVencimento = (dataEntrada, numeroParcela) => {
+    const mesesParaVencimento = numeroParcela; 
+    return addMonths(new Date(dataEntrada), mesesParaVencimento);
+  };
+    let transaction;
+  try {
+    transaction = await sequelize.transaction();
+    const valorParcela = (valor/num_parcelas).toFixed(2);
+
+
+    const entrada = await Entrada.create({
+      descricao, metodo, valor, categoria, data,usuario_id,num_parcelas
+    },{transaction});
+
+    const parcelasData = Array.from({ length: num_parcelas }, (_, index) => ({
+      num: index + 1,
+      valor_parcela: parseFloat(valorParcela),
+      data_vencimento: calcularDataVencimento(data, index + 1),
+      transacao_id: entrada.id,
+      usuario_id: entrada.usuario_id
+    }));
+    const parcelasCriadas = await Parcelas.bulkCreate(parcelasData, { transaction });
+
+    await transaction.commit();
+
+
+    const respostaJSON = {
+      entrada: entrada.toJSON(),
+      parcelas: parcelasCriadas.map(parcela => parcela.toJSON())
+    };
+
+    res.status(201).json(respostaJSON)
+  } catch (error) {
+
+    if (transaction) await transaction.rollback();
+
+    console.error('Erro ao criar entrada com parcelas:', error);
+    res.status(400).send(error);
   }
 }
