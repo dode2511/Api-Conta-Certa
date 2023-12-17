@@ -3,6 +3,7 @@ import { startOfMonth, endOfMonth } from 'date-fns';
 import { sequelize } from '../databases/conecta.js'
 import { Op } from "sequelize"
 import addMonths from 'date-fns/addMonths/index.js'
+import { ParcelasSaidas } from '../models/ParcelasSaidas.js';
 
 export const saidaIndex = async (req, res) => {
   try {
@@ -16,21 +17,53 @@ export const saidaIndex = async (req, res) => {
 
 
 
-export const saidaCreate = async (req, res) => {
-  const { valor, metodo, descricao, categoria, data,usuario_id,num_parcelas } = req.body
 
-  if (!descricao || !usuario_id || !valor || !categoria || !data  ) {
+export const saidaCreate = async (req, res) => {
+  const { valor, metodo, descricao, categoria, data, usuario_id,num_parcelas} = req.body
+
+  if (!descricao || !usuario_id || !valor || !categoria || !data ) {
     res.status(400).json({ id: 0, msg: "Erro... Informe os dados" })
     return
   }
 
+  const calcularDataVencimento = (dataSaida, numeroParcela) => {
+    const mesesParaVencimento = numeroParcela; 
+    return addMonths(new Date(dataSaida), mesesParaVencimento);
+  };
+    let transaction;
   try {
+    transaction = await sequelize.transaction();
+    const valorParcela = (valor/num_parcelas).toFixed(2);
+
+
     const saida = await Saida.create({
       descricao, metodo, valor, categoria, data,usuario_id,num_parcelas
-    });
-    res.status(201).json(saida)
+    },{transaction});
+
+    const parcelasData = Array.from({ length: num_parcelas }, (_, index) => ({
+      num: index + 1,
+      valor_parcela: parseFloat(valorParcela),
+      data_vencimento: calcularDataVencimento(data, index + 1),
+      transacao_id: saida.id,
+      usuario_id: saida.usuario_id
+    }));
+    const parcelasCriadas = await ParcelasSaidas.bulkCreate(parcelasData, { transaction });
+
+    await transaction.commit();
+
+
+    const respostaJSON = {
+      saida: saida.toJSON(),
+      parcelas: parcelasCriadas.map(parcela => parcela.toJSON())
+    };
+
+    res.status(201).json(respostaJSON)
   } catch (error) {
-    res.status(400).send(error)
+
+    if (transaction) await transaction.rollback();
+
+    console.error('Erro ao criar saida com parcelas:', error);
+    res.status(400).send(error);
   }
 }
 
