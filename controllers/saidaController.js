@@ -1,5 +1,6 @@
 import { Saida } from '../models/Saida.js';
-import { startOfMonth, endOfMonth, format, startOfDay, subDays } from 'date-fns';
+import { startOfMonth, endOfMonth, format, startOfDay, subDays  } from 'date-fns';
+import {  utcToZonedTime } from 'date-fns-tz'
 import { sequelize } from '../databases/conecta.js'
 import { Op } from "sequelize"
 import addMonths from 'date-fns/addMonths/index.js'
@@ -268,3 +269,44 @@ export const TotalSaidaUsuario = async (req, res) =>{
     res.status(400).send(error)
   }
 }
+
+
+
+export const TotalDespesasAno = async (req, res) => {
+  const { id: usuario_id } = req.params;
+  const { ano } = req.query;
+
+  try {
+    const totalsPorMes = [];
+    for (let mes = 1; mes <= 12; mes++) {
+      const dataInicio = startOfMonth(utcToZonedTime(new Date(Number(ano), mes - 1), 'UTC'));
+      const dataFim = endOfMonth(utcToZonedTime(new Date(Number(ano), mes - 1), 'UTC'));
+
+      const dadosAgrupados = await Saida.findAll({
+        attributes: [
+          [sequelize.fn('SUM', sequelize.col('valor')), 'total'],
+        ],
+        where: {
+          usuario_id: usuario_id,
+          data: {
+            [Op.between]: [dataInicio, dataFim],
+          },
+        },
+      });
+
+      const nomeMes = format(dataInicio, 'MMMM', { timeZone: 'UTC' }); // Obtém o nome do mês em UTC
+
+      // Adiciona o total, o mês e o nome do mês ao array
+      totalsPorMes.push({
+        mes: mes,
+        nomeMes: nomeMes,
+        total: dadosAgrupados[0]?.dataValues.total || 0,
+      });
+    }
+
+    res.json(totalsPorMes);
+  } catch (error) {
+    console.error(error);
+    res.status(400).send(error);
+  }
+};

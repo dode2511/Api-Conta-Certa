@@ -4,7 +4,7 @@ import { loginUsuario } from "./controllers/loginController.js"
 import { verificaLogin } from "./middlewares/verificaLogin.js"
 
 import { entradaDestroy, entradaCreate, entradaIndex, entradapesq,  entradaGraphDias, entradaCategorias, entradaPesqData, TotalEntradaUsuario,  } from "./controllers/entradaController.js"
-import { TotalSaidaUsuario, saidaCategoriasData, saidaCreate, saidaDestroy, saidaIndex, saidaMetodoData, saidaPesq, saidapassadas, saidaproximos, teste } from "./controllers/saidaController.js"
+import { TotalDespesasAno, TotalSaidaUsuario, saidaCategoriasData, saidaCreate, saidaDestroy, saidaIndex, saidaMetodoData, saidaPesq, saidapassadas, saidaproximos, teste } from "./controllers/saidaController.js"
 
 const router = Router()
 
@@ -33,6 +33,7 @@ router.get(`/saidas/:id`,saidaPesq)
       .get('/totalSaidas/:id',TotalSaidaUsuario )
       .get('/graphMetodoValorData/:id',saidaMetodoData )
       .get('/graphValorParcela/:id',teste )
+      .get('/totalDespesasAno/:id',TotalDespesasAno )
 
 
 
