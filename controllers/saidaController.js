@@ -1,4 +1,4 @@
-import { Saida } from '../models/Saida.js'
+import { Saida } from '../models/Saida.js';
 import { startOfMonth, endOfMonth } from 'date-fns';
 import { sequelize } from '../databases/conecta.js'
 import { Op } from "sequelize"
@@ -7,7 +7,7 @@ import { ParcelasSaidas } from '../models/ParcelasSaidas.js';
 
 export const saidaIndex = async (req, res) => {
   try {
-    const saida = await Saida.findAll()
+    const saida = await  Saida.findAll()
     res.status(200).json(saida)
   } catch (error) {
     res.status(400).send(error)
@@ -100,7 +100,8 @@ export const saidaCategoriasData = async (req, res) =>{
     const dadosAgrupados = await Saida.findAll({
       attributes: [
         'categoria',
-         [sequelize.fn('COUNT', sequelize.col('id')), 'num']
+         [sequelize.fn('COUNT', sequelize.col('id')), 'num'],
+
         ],
         where: {
           usuario_id: usuario_id ,
@@ -112,6 +113,73 @@ export const saidaCategoriasData = async (req, res) =>{
         },
       },
       group: ['categoria'],
+    },);
+  
+    res.json(dadosAgrupados);
+  } catch (error) {
+    console.error(error);
+    res.status(400).send(error)
+  }
+}
+
+
+
+
+
+export const saidaMetodoData = async (req, res) => {
+  const { id: usuario_id } = req.params;
+  const { mes, ano } = req.query;
+
+  try {
+    const dadosAgrupados = await Saida.findAll({
+      attributes: [
+        'metodo',
+         [sequelize.fn('COUNT', sequelize.col('id')), 'num'],
+         [sequelize.fn('SUM', sequelize.col('valor')), 'total']
+
+        ],
+        where: {
+          usuario_id: usuario_id ,
+          data: {
+            [Op.between]: [
+              startOfMonth(new Date(Number(ano), Number(mes) - 1)),
+              endOfMonth(new Date(Number(ano), Number(mes) - 1))
+            ],
+        },
+        num_parcelas: 0,
+      },
+      group: ['metodo'],
+    },);
+  
+    res.json(dadosAgrupados);
+  } catch (error) {
+    console.error(error);
+    res.status(400).send(error)
+  }
+}
+
+
+export const teste = async (req, res) => {
+  const { id: usuario_id } = req.params;
+  const { mes, ano } = req.query;
+
+  try {
+    const dadosAgrupados = await ParcelasSaidas.findAll({
+      attributes: [
+  
+         [sequelize.fn('SUM', sequelize.col('valor_parcela')), 'total_parcela']
+
+        ],
+        where: {
+          usuario_id: usuario_id ,
+          data_vencimento: {
+            [Op.between]: [
+              startOfMonth(new Date(Number(ano), Number(mes) - 1)),
+              endOfMonth(new Date(Number(ano), Number(mes) - 1))
+            ],
+        },
+      },
+      
     },);
   
     res.json(dadosAgrupados);

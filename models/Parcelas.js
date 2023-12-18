@@ -2,12 +2,11 @@ import { DataTypes } from 'sequelize';
 import { sequelize } from '../databases/conecta.js';
 import { Usuario } from './Usuario.js';
 import { Entrada } from './Entrada.js';
-import { Saida } from './Saida.js';
 
 
 
 export const Parcelas = sequelize.define('parcelas', {
-    id: {
+    id_: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true

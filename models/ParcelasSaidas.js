@@ -7,7 +7,7 @@ import { Saida } from './Saida.js';
 
 
 export const ParcelasSaidas = sequelize.define('parcelassaidas', {
-    id: {
+    id_: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true
