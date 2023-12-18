@@ -310,3 +310,27 @@ export const TotalDespesasAno = async (req, res) => {
     res.status(400).send(error);
   }
 };
+
+
+export const saidaMesIdex = async (req, res) => {
+  const { id: usuario_id } = req.params;
+  const { mes,ano } = req.query;
+ try {
+  const dadosAgrupados = await Saida.findAll({
+      where: {
+        usuario_id: usuario_id ,
+        data: {
+          [Op.between]: [
+            startOfMonth(new Date(Number(ano), Number(mes) - 1)),
+            endOfMonth(new Date(Number(ano), Number(mes) - 1))
+          ],
+      },
+    },
+  },);
+
+  res.json(dadosAgrupados);
+} catch (error) {
+  console.error(error);
+  res.status(400).send(error)
+}
+}
