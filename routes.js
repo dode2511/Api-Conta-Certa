@@ -3,8 +3,9 @@ import { login, usuarioAlteraSenha, usuarioCreate, usuarioIndex } from "./contro
 import { loginUsuario } from "./controllers/loginController.js"
 import { verificaLogin } from "./middlewares/verificaLogin.js"
 
-import { entradaDestroy, entradaCreate, entradaIndex, entradapesq,  entradaGraphDias, entradaCategorias, entradaPesqData, TotalEntradaUsuario,  } from "./controllers/entradaController.js"
+import { entradaDestroy, entradaCreate, entradaIndex, entradapesq,  entradaGraphDias, entradaCategorias, entradaPesqData, TotalEntradaUsuario, TotalEntradaAnual,  } from "./controllers/entradaController.js"
 import { TotalDespesasAno, TotalSaidaUsuario, saidaCategoriasData, saidaCreate, saidaDestroy, saidaIndex, saidaMetodoData, saidaPesq, saidapassadas, saidaproximos, teste } from "./controllers/saidaController.js"
+import { SaldoLiquidoUsuario } from "./controllers/saldoController.js"
 
 const router = Router()
 
@@ -18,6 +19,7 @@ router.get(`/entradas`,entradaIndex)
       .get('/pesqData/:id', entradaPesqData)
       .get('/dias', entradaGraphDias)
       .get('/totalEntradas/:id',TotalEntradaUsuario )
+      .get('/totalEntradasAno/:id',TotalEntradaAnual )
 
 
 
@@ -36,6 +38,9 @@ router.get(`/saidas/:id`,saidaPesq)
       .get('/totalDespesasAno/:id',TotalDespesasAno )
 
 
+
+
+router.get('/saldoAnual/:id',SaldoLiquidoUsuario )
 
 
 router.get('/usuarios', usuarioIndex)//verificaLogin
