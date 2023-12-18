@@ -4,7 +4,7 @@ import { sequelize } from '../databases/conecta.js'
 import { Parcelas } from '../models/Parcelas.js'
 import Transaction from 'sequelize'
 import addMonths from 'date-fns/addMonths/index.js'
-import { startOfMonth, endOfMonth } from 'date-fns';
+import { startOfMonth, endOfMonth,startOfDay,endOfDay } from 'date-fns';
 
 export const entradaIndex = async (req, res) => {
   try {
@@ -159,5 +159,67 @@ export const entradaCreate = async (req, res) => {
 
     console.error('Erro ao criar entrada com parcelas:', error);
     res.status(400).send(error);
+  }
+}
+
+
+
+
+
+
+export const entradaPesqData = async (req, res) => {
+
+  const { id: usuario_id } = req.params;
+  const { dia,mes, ano } = req.query;
+
+  try {
+    const dadosAgrupados = await Entrada.findAll({
+      where: {
+        usuario_id: usuario_id,
+        data: {
+          [Op.between]: [
+            startOfDay(new Date(Number(ano), Number(mes) - 1, Number(dia))),
+            endOfDay(new Date(Number(ano), Number(mes) - 1, Number(dia))),
+          ],
+        },
+      },
+    });
+  
+    res.json(dadosAgrupados);
+  } catch (error) {
+    console.error(error);
+    res.status(400).send(error);
+  }
+}
+
+
+
+
+
+export const TotalEntradaUsuario = async (req, res) =>{
+  const { id: usuario_id } = req.params;
+  const { mes, ano } = req.query;
+
+  try {
+    const dadosAgrupados = await Entrada.findAll({
+      attributes: [
+        
+         [sequelize.fn('SUM', sequelize.col('valor')), 'total']
+        ],
+        where: {
+          usuario_id: usuario_id ,
+          data: {
+            [Op.between]: [
+              startOfMonth(new Date(Number(ano), Number(mes) - 1)),
+              endOfMonth(new Date(Number(ano), Number(mes) - 1))
+            ],
+        },
+      },
+    },);
+  
+    res.json(dadosAgrupados);
+  } catch (error) {
+    console.error(error);
+    res.status(400).send(error)
   }
 }

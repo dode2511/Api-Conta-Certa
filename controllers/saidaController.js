@@ -3,6 +3,7 @@ import { startOfMonth, endOfMonth, format, startOfDay, subDays } from 'date-fns'
 import { sequelize } from '../databases/conecta.js'
 import { Op } from "sequelize"
 import addMonths from 'date-fns/addMonths/index.js'
+import { Entrada } from '../models/Entrada.js';
 
 export const saidaIndex = async (req, res) => {
   try {
@@ -136,3 +137,33 @@ export const saidapassadas = async (req, res) => {
     res.status(400).send(error);
   }
 };
+
+
+
+export const TotalSaidaUsuario = async (req, res) =>{
+  const { id: usuario_id } = req.params;
+  const { mes, ano } = req.query;
+
+  try {
+    const dadosAgrupados = await Saida.findAll({
+      attributes: [
+        
+         [sequelize.fn('SUM', sequelize.col('valor')), 'total']
+        ],
+        where: {
+          usuario_id: usuario_id ,
+          data: {
+            [Op.between]: [
+              startOfMonth(new Date(Number(ano), Number(mes) - 1)),
+              endOfMonth(new Date(Number(ano), Number(mes) - 1))
+            ],
+        },
+      },
+    },);
+  
+    res.json(dadosAgrupados);
+  } catch (error) {
+    console.error(error);
+    res.status(400).send(error)
+  }
+}
