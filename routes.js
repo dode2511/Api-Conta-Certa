@@ -2,10 +2,9 @@ import { Router } from "express"
 import { login, usuarioAlteraSenha, usuarioCreate, usuarioIndex } from "./controllers/usuarioController.js"
 import { loginUsuario } from "./controllers/loginController.js"
 import { verificaLogin } from "./middlewares/verificaLogin.js"
+
 import { entradaDestroy, entradaCreate, entradaIndex, entradapesq,  entradaGraphDias, entradaCategorias, entradaPesqData, TotalEntradaUsuario,  } from "./controllers/entradaController.js"
-import { saidaCategoriasData, saidaCreate, saidaDestroy, saidaIndex, saidaPesq, saidaproximos, saidapassadas, TotalSaidaUsuario } from "./controllers/saidaController.js"
-import { entradaDestroy, entradaCreate, entradaIndex, entradapesq,  entradaGraphDias, entradaCategorias,  } from "./controllers/entradaController.js"
-import { saidaCategoriasData, saidaCreate, saidaDestroy, saidaIndex, saidaMetodoData, saidaPesq, teste } from "./controllers/saidaController.js"
+import { TotalSaidaUsuario, saidaCategoriasData, saidaCreate, saidaDestroy, saidaIndex, saidaMetodoData, saidaPesq, saidapassadas, saidaproximos, teste } from "./controllers/saidaController.js"
 
 const router = Router()
 
