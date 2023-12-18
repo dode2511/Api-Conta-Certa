@@ -1,11 +1,12 @@
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../databases/conecta.js';
 import { Usuario } from './Usuario.js';
-import { Entrada } from './Entrada.js';
+
+import { Saida } from './Saida.js';
 
 
 
-export const Parcelas = sequelize.define('parcelas', {
+export const ParcelasSaidas = sequelize.define('parcelassaidas', {
     id_: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -29,7 +30,7 @@ export const Parcelas = sequelize.define('parcelas', {
   });
 
 
-  Parcelas.belongsTo(Usuario, {
+  ParcelasSaidas.belongsTo(Usuario, {
     foreignKey: {
       name: 'usuario_id',
       allowNull: false
@@ -40,7 +41,7 @@ export const Parcelas = sequelize.define('parcelas', {
 
   
 
-  Parcelas.belongsTo(Entrada, {
+  ParcelasSaidas.belongsTo(Saida, {
     foreignKey: {
       name: 'transacao_id',
       allowNull: false
@@ -50,7 +51,7 @@ export const Parcelas = sequelize.define('parcelas', {
   })
 
   
-Entrada.hasMany(Parcelas, {
+Saida.hasMany(ParcelasSaidas, {
     foreignKey: 'transacao_Id'
   })
 
