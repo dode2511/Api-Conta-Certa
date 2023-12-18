@@ -31,7 +31,6 @@ router.get(`/saidas/:id`,saidaPesq)
       .get('/graphproximos/:id',saidaproximos )
       .get('/graphpassadas/:id',saidapassadas )
       .get('/totalSaidas/:id',TotalSaidaUsuario )
-
       .get('/graphMetodoValorData/:id',saidaMetodoData )
       .get('/graphValorParcela/:id',teste )
 
