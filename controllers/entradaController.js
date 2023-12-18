@@ -174,21 +174,25 @@ export const entradaPesqData = async (req, res) => {
 
   try {
     const dadosAgrupados = await Entrada.findAll({
-      where: {
-        usuario_id: usuario_id,
-        data: {
-          [Op.between]: [
-            startOfDay(new Date(Number(ano), Number(mes) - 1, Number(dia))),
-            endOfDay(new Date(Number(ano), Number(mes) - 1, Number(dia))),
-          ],
+      attributes: [
+        
+         [sequelize.fn('SUM', sequelize.col('valor')), 'total']
+        ],
+        where: {
+          usuario_id: usuario_id ,
+          data: {
+            [Op.between]: [
+              new Date(Number(ano), Number(mes) - 1, Number(dia)),
+              new Date(Number(ano), Number(mes) - 1, Number(dia), 23, 59, 59, 999), // Define o final do dia
+            ],
         },
       },
-    });
+    },);
   
     res.json(dadosAgrupados);
   } catch (error) {
     console.error(error);
-    res.status(400).send(error);
+    res.status(400).send(error)
   }
 }
 
