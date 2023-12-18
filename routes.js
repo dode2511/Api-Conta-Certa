@@ -3,7 +3,7 @@ import { login, usuarioAlteraSenha, usuarioCreate, usuarioIndex } from "./contro
 import { loginUsuario } from "./controllers/loginController.js"
 import { verificaLogin } from "./middlewares/verificaLogin.js"
 import { entradaDestroy, entradaCreate, entradaIndex, entradapesq,  entradaGraphDias, entradaCategorias,  } from "./controllers/entradaController.js"
-import { saidaCategoriasData, saidaCreate, saidaDestroy, saidaIndex, saidaPesq, saidaproximos } from "./controllers/saidaController.js"
+import { saidaCategoriasData, saidaCreate, saidaDestroy, saidaIndex, saidaPesq, saidaproximos, saidapassadas } from "./controllers/saidaController.js"
 
 const router = Router()
 
@@ -26,6 +26,7 @@ router.delete(`/saidas`,saidaDestroy)
 router.get(`/saidas/:id`,saidaPesq)
       .get('/graphSaidas/:id',saidaCategoriasData )
       .get('/graphproximos/:id',saidaproximos )
+      .get('/graphpassadas/:id',saidapassadas )
 
 
 

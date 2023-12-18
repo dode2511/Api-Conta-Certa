@@ -1,5 +1,5 @@
 import { Saida } from '../models/Saida.js'
-import { startOfMonth, endOfMonth, format, startOfDay } from 'date-fns';
+import { startOfMonth, endOfMonth, format, startOfDay, subDays } from 'date-fns';
 import { sequelize } from '../databases/conecta.js'
 import { Op } from "sequelize"
 import addMonths from 'date-fns/addMonths/index.js'
@@ -103,6 +103,28 @@ export const saidaproximos = async (req, res) => {
         categoria: 'Fixos',
         data: {
           [Op.gte]: formattedCurrentDate,
+        },
+      },
+    });
+
+    console.log('Dados Agrupados:', dadosAgrupados);
+    res.json(dadosAgrupados);
+  } catch (error) {
+    console.error(error);
+    res.status(400).send(error);
+  }
+};
+
+
+export const saidapassadas = async (req, res) => {
+  const { id: usuario_id } = req.params;
+
+  try {
+    const dadosAgrupados = await Saida.findAll({
+      where: {
+        usuario_id: usuario_id,
+        data: {
+          [Op.lt]: new Date(), // Menor que a data atual
         },
       },
     });
