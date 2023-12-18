@@ -3,6 +3,7 @@ import { startOfMonth, endOfMonth, format, startOfDay, subDays } from 'date-fns'
 import { sequelize } from '../databases/conecta.js'
 import { Op } from "sequelize"
 import addMonths from 'date-fns/addMonths/index.js'
+import { ParcelasSaidas } from '../models/ParcelasSaidas.js';
 
 export const saidaIndex = async (req, res) => {
   try {
